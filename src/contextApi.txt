@@ -1,0 +1,314 @@
+How JavaScript Works ?
+And how the code is executed..
+Synchronous or Asynchronous ?
+Single Threaded || MultiThreded
+
+**Everything in javaScript happens inside an "Execution Context"
+
+JavaScript is a synchronous single-threaded language
+
+
+Execution Context
+
+1. Memory -> all the variables and functions are stored as a key value pair, functions an varible are stored (also called variable enviornment).
+2. Code -> This is the place where code is executed one line at a time (Thread of execution).
+
+*****JavaScript is a synchronous single threaded language.*****
+Therefore JavaScript can execute only one command at a time.
+And in a specific order (means it goes to next line only when the current line is executed).
+
+Execution Context
+
+variable Enviornment (Memory Component)  |    Thread of Execution (Code Component)
+                                         |    line1.......................
+key: value                               |    line2.......................
+a: 10                                    |    line3.......................
+function f(n): {......}                  |    line4.......................
+
+Synchronous and single thread means that it executes line by line (execute only one command at a time)
+and in a Specific order
+Ex. line1 -> line2 -> line3 -> line4 .................... so on.
+
+
+  *********************************************************************************************************************************************************
+
+What happens when you run a JavaScript code ?
+
+1. var n = 2;
+2. function square(num) // num here is the parameter of the function
+3. {
+4. var ans = num * num;
+5. return ans;
+6. }
+7. var square2 = square(n);  // n here is the argument to the function
+8. var square4 = square(4);
+
+execution pattern: =>
+line1 -> line2 -> line3 -> line4 -> line5 -> line6 -> line7 -> line8...
+
+Memory creation phase ->                    Code Execution phase ->
+
+Memory                                  |   Code
+                                        |   Ex. when this encounters the first line (it acutually places the 2 inside the n)
+n: undefined (after code exeution : 2)  |   when we move to line no. 2 it will do nothing because it's a function then moves to line number 7
+square: {whole code of the func}        |   where we invoke a function (i.e function invokation)
+sqaure2: undefined  (updated value : 4) |   Whenever you see a funtion call then its time of execution of the function
+square4: undefined  (updated value : 16)|
+                                        |
+**for square4 the code executed again   |   Memory (memory creation phase)         | Code (code execution phase)
+as after the execution of square2       |   num: undefined (after code exe: 2)     |  num * num assigned to ans
+the code is deleted from the memory**   |   ans: undefined ('' : num * num = 4)    |
+                                        |                                          |
+                                        |                                          |
+
+
+After the value assigned to square2 the code of the function invokation is deleted completly and for square4 variable the code is executed again same
+as illustrated in the code Component
+
+....... And after all the lines are executed from line1 to line8 the whole global execution context is also deleted ........
+That's how the whole codes executes......
+
+This is known as the call Stack : => It is a stack and every time in the bottom of the stack we have our global execution context (i.e this call stack is
+polpulated with the global execution context)
+Example Stack<Event> stack = new Stack<>();
+
+stack.addElement(globalExecution); //main global execution Event
+stack.addElement(execution1); // execution when the function invoked by square2 variable
+stack.remove(execution1); // execution1 got deleted after being used
+stack.addElement(execution2); // execution when the function invoked by square4 variable
+stack.remove(execution2); // execution2 got deleted after being used
+stack.remove(globalExecution); // At last global execution also got deleted
+
+Most Important : => Call Stack Maintains the Order of execution of "****Execution Contexts****"
+
+Substitute name for Call Stack
+
+1. Call Stack
+2. Execution Context Stack
+3. Program Stack
+4. Control Stack
+5. Runtime Stack
+6. Machine Stack
+
+  ********************************************************************************************************************************************************
+
+
+
+                                                                ((Ep. 3) Hoisting in JavaScript)
+
+Example 1.
+
+ var x = 7;
+ function getName() {
+ console.log("Namaste JavaScript");
+ }
+ getName();
+ console.log(x);
+
+ Output:
+ Namaste JavaScript
+ 7
+
+Example 2.
+
+getName();
+console.log(x);
+var x = 7;
+function getName()
+{
+console.log("Namaste JavaScript");
+}
+
+Output:
+Namaste JavaScript
+undefined
+
+
+Example 3.
+
+getName();
+console.log(x);
+function getName()
+{
+console.log("Namaste JavaScript");
+}
+
+Output:
+Namaste JavaScript
+Uncaught ReferenceError: x is not defined at
+
+Hoisting : Hoisting is a phenomena in JavaScript By which one can access variables and functions even before one have initilized
+it and put some value in it
+
+Example 4.
+
+var x = 7;
+function getName()
+{
+console.log("Namaste JavaScript");
+}
+console.log(getName());
+
+Output: -> Prints the function itself
+f getName()
+{
+console.log("Namaste JavaScript");
+}
+
+Example 5.
+
+console.log(getName());
+function getName()
+{
+console.log("Namaste JavaScript");
+}
+
+Example 6.
+
+getName();
+console.log(x);
+console.log(getName());
+var x = 7;
+var getName = () =>
+{
+console.log("Namaste JavaScript");
+}
+var getName2 = () => {
+// it also behaves like a variable not as a function
+}
+// The function and variables are defined in memory even before the code is executed
+Uncaught TypeError: getName is not a function at
+
+in example 6 getName is a variable and undefined is assigned to it in the memory component
+
+  *******************************************************************************************************************************************************
+
+                                                           How funtions works in JavaScript
+
+var x = 1;
+a();
+b();
+console.log(x);
+function a()
+{
+var x = 10;
+console.log(x);
+}
+function b()
+{
+var x = 100;
+console.log(x);
+}
+
+Execution Context
+
+Memory phase                                         Code phase
+x: undefined
+a: {function code}
+b: {function code}
+
+ *********************************************************************************************************************************************************
+
+                                                                           Scope and Chain
+  Lexical Enviornment: Whenever an execution context is created a lexical enviornment is also created
+  So lexical enviornment is the local memory along with the lexical enviornment or its parent.
+  Lexical: in heirarchy, in sequence....
+
+  Example.
+
+  funciton a()
+  {
+  c();
+  function c()
+  {
+  console.log(b);
+  }
+  }
+  var b = 10;
+  a();
+  function c is lexical inside a function
+  function a is lexical inside global scope
+  this is lexical (local memory along with lexical enviornment of the parent)
+
+  *******************************************************************************************************************************************************
+
+  What is a temporal deadZone ?
+  Are let and const declarations hoisted ?
+  SyntaxError vs. RefrenceError vs. TypeError
+
+  let and const declrations are hoisted But they are hoisted very differently than the var declaration
+  These are in the temporal deadzone for the time being
+
+  Whenever you try to access a variable inside a temporal deadzone it gives you reference Error
+  And they can only be accessed when some value is initilized to them
+
+  Refrence Error: Whenever a variable is not initilized any value in any scope and in any refrence to the scope then
+  this is the error our debugger is showing
+  let and const doesn't store in window object (i.e it behave likes that if the let & const is not declared and
+  initilized anywhere in the global space (same case is with the this object
+  They are stored in some other reserved space
+
+  We can't redelare let and const this will through us a syntax error
+
+  Example.
+  let a = 100;
+  let a = 200;
+  Uncaught SyntaxError: Identifier 'a' has already been declared
+
+  JavaScript code will not run if redeclaration of let and const is somewhere in the code
+  Example.
+  console.log("Hello this code will not work due to redeclaration of let object");
+  let a = 100;
+  let a = 200;
+
+  And also i can't use the same name to declare my var (which name i already use in the declaration of let & const)
+  (means we can't use the same name to declare a var as we already use with let ans const
+  in the same scope)
+
+  const is even more strict than let
+  Example.
+  let a;
+  a = 10;
+  console.log(a);
+  output: 10;
+
+  const a;
+  a = 20;
+  console.log(a);
+  output: Uncaught Syntax Error: Missing initilizer in const declaration
+
+  And TypeError:
+  const b = 100;
+  b = 10000;
+
+  Output: Uncaught TypeError: Assignment to constant variable.
+
+  Syntax Error:
+  1. const a;
+  2. let a = 10;
+     let a = 20;
+
+  Refrence Error:
+  console.log(a);
+  and a is not defined in any scope of the code
+  and when a is in the temporal deadzone
+  Example.
+  console.log(a);
+  let a = 1000;
+
+
+
+
+
+
+  JavaScript:
+  1. JavaScript is often known as JS, is a high level dynamic interpreted language.
+  2. It allows client-side scripting to create completely dynamic web applications and websites.
+
+  JavaScript was initially designed for making pages "alive".
+  Scripts can be executed in the browser.
+  JavaScript and java are different progrramming languages.
+  It can be executed on the browser as well as on the server.
+  JavaScript is a safe language when used in browser.
+  There are languages that are "transpiled" to JavaScript.
+

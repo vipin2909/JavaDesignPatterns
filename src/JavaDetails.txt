@@ -1,0 +1,57 @@
+1. Source: Create a source document. Use an established protocol(In this case the Java Language)
+
+2. Compiler: Run your document through a source code compiler. The compiler checks for errors and
+won't let you compile until it's satisfied that everthing will run correctly.
+
+3. Output(code): The compiler creates a new document, coded into java Bytecode.
+any device capable of running java will be able to interpret/translate this file
+into something it can run. The compiled bytecode is platform-independent.
+
+4. Vitual Machines: Your friends don't have a physical Java machine but they all
+have a virtual Java machine(implemented in software) running inside their electronic
+gadgets. The virtual machine reads and run the bytecode.
+
+Example: =>
+
+import java.io.*;
+public class Main
+{
+public static void main(String[] args)
+{
+Scanner sc = new Scanner(System.in);
+int a = sc.nextInt();
+System.out.println(a+10);
+}
+}
+
+Source code here: Main.java
+-> Compile Main.java file by running javac (the compiler application).
+if you don't have errors, you'll get a second document named Main.class
+The compiler generated Main.class file is made up of bytecodes.
+
+->Compiled code: Party.class
+
+->Run the program by starting the Java Virtual Machine(JVM) with the Main.class
+file. The JVM translates the bytecode into something the underlying platform
+understands, and runs your program.
+int size = 27;
+String name = "anyName";
+Dog myDog = new Dog(name, size);
+x = size - 5;
+if(x < 15) myDog.bark(8);
+while(x > 3)
+{
+myDog.play();
+}
+int[] numList = {2, 4, 6, 8};
+System.out.print("Hello");
+System.out.print("Dog: " + name);
+String num = "8";
+int z = Integer.parseInt(num);
+try{
+readTheFile("myFile.txt");
+}
+catch(FileNotFoundException ex)
+{
+System.out.println("File not found.");
+}
